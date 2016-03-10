@@ -1,0 +1,53 @@
+body {
+  background-image: linear-gradient(90deg, #83D9C5, #114F44);
+  color : #fff;
+}
+
+
+button, input {
+  /* CSS3 standard */
+  opacity:0.4;
+  border : 1px solid white;
+  width : 100px;
+  margin : 10px;
+}
+
+header {
+  height : 50px;
+  font-size: 50px;
+  text-align: center;
+}
+
+#submitBtn:hover {
+  opacity:0.7;
+}
+
+#tableName:focus {
+  opacity:0.7;
+}
+
+#editor {
+}
+
+.component,.view{
+  float: left;
+  margin : 0px 5px;
+}
+
+.component {
+  width : 200px;
+}
+
+.view {
+  border : 1px #D7FBBC solid;
+  width : 70%;
+  height: 500px;
+}
+
+.d-column-input {
+  margin : 5px;
+}
+
+.d-label-block {
+  display: block;
+}
