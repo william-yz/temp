@@ -16,6 +16,11 @@ var Class = (function() {
       managedClass.delete(className);
     }
 
+    static get(className) {
+      console.log(managedClass.get(className));
+      return managedClass.get(className);
+    }
+
     static create(className, prop) {
       var clazz = managedClass.get(className);
       if (clazz  !== undefined && typeof clazz === 'function') {

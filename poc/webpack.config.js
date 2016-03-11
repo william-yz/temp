@@ -21,18 +21,19 @@ module.exports = {
         loaders : ['babel']
       },{
         test : /\.tpl$/,
-        loaders : 'text'
+        loader : 'text'
       }
     ]
   },
 
   resolve : {
     root : [path.join(__dirname, 'public/src')],
-    extensions : ['', '.js', '.css'],
+    extensions : ['', '.js', '.css', '.tpl'],
     alias : {
       jquery : path.join(__dirname, 'node_modules', 'jquery', 'dist', 'jquery.min.js'),
       lodash : path.join(__dirname, 'node_modules', 'lodash', 'lodash.min.js'),
-      Class : path.join(__dirname, 'public', 'src', 'util', 'Class.js')
+      Class : path.join(__dirname, 'public', 'src', 'util', 'Class.js'),
+      assert : path.join(__dirname, 'public', 'src', 'util', 'assert.js')
     }
   }
 

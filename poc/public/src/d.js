@@ -2,9 +2,13 @@
 var $ = require('jquery');
 var Class = require('Class');
 
+Class.create('Component', {
+  rootEl : '.component'
+});  
+
 
 $(function() {
-  
+  var columns;
   
     $('#submitBtn').on('click', function() {
     var tableName = $('#tableName').val();
@@ -13,7 +17,8 @@ $(function() {
   });
 
   $('.component').on('dragstart', '.d-column-li', function(event) {
-    // console.log(event);
+     console.log(event);
+    event.dataTransfer.setData("id",event.target.id);
   });
 
   $('.component').on('dragend', '.d-column-li', function(event) {
@@ -34,16 +39,15 @@ $(function() {
   });
   function postSubmit(data) {
     $('#editor header').html(data.tableName);
-    var columns = data.columns,
+    columns = data.columns;
         components = $('.component');
 
     columns.forEach(function(column) {
-      Class.create('Component',column);
-      var cmp = '<li draggable="true" class="d-column-li" data-columns="columns">'+
+      var cmp = '<li id="'+ column.name+'" draggable="true" class="d-column-li">'+
                   '<label class="d-label-block" for="' + column.name + '">' 
                     + column.name +
                   '</label>'+
-                  '<input id="'+ column.name+'" name="'+column.name +'" class="d-column-input" />'+
+                  '<input name="'+column.name +'" class="d-column-input" />'+
                 '</li>';
       components.append(cmp);
     });
