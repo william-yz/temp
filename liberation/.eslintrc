@@ -1,0 +1,24 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "globals": {
+    "Vue": true,
+    "_": true,
+    "Backbone": true,
+    "$":true
+  },
+  "extends": "eslint:recommended",
+  "rules" : {
+    "no-console" : 0,
+    "prefer-const" : 2,
+    "strict" : 2,
+    "no-extra-boolean-cast" : 0,
+    "no-unused-vars" : 1
+
+  }
+}
