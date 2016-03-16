@@ -1,0 +1,8 @@
+'use strict';
+const ADD_COMPONENT = 'ADD_COMPONENT';
+const SELECT_COMPONENT = 'SELECT_COMPONENT';
+
+module.exports = {
+  ADD_COMPONENT,
+  SELECT_COMPONENT
+}

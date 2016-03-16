@@ -2,20 +2,23 @@
   <header-section></header-section>
 
   <div id="editor">
+    <selector></selector>
     <view-panel></view-panel>
-    <components></components>
+    <manager></manager>
   </div>
 </template>
 
 <script>
-var headerSection = require('./modules/header/HeaderSection');
-var viewPanel = require('./modules/view/ViewPanel');
-var Components = require('./modules/components/Components');
+var HeaderSection = require('./modules/header/HeaderSection');
+var ViewPanel = require('./modules/view/ViewPanel');
+var Manager = require('./modules/manager/Manager');
+var Selector = require('./modules/selector/Selector');
 module.exports = {
   components: {
-    headerSection,
-    viewPanel,
-    Components
+    Selector,
+    HeaderSection,
+    ViewPanel,
+    Manager
   }
 }
 </script>
@@ -29,5 +32,18 @@ header
   font-size 50px
   text-align center
 
+#editor
+  height 100%
 
+button, input
+    opacity 0.4
+    border 1px solid white
+    width 100px
+    margin 10px
+
+button:hover
+    opacity 0.7
+
+label
+  display block
 </style>

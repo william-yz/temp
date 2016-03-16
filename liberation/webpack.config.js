@@ -40,7 +40,9 @@ module.exports = {
       jquery : path.join(__dirname, 'node_modules', 'jquery', 'dist', 'jquery.min.js'),
       lodash : path.join(__dirname, 'node_modules', 'lodash', 'lodash.min.js'),
       backbone : path.join(__dirname, 'node_modules', 'backbone', 'backbone-min.js'),
-      Vue : path.join(__dirname, 'node_modules', 'vue', 'dist', 'vue.min.js')
+      Vue : path.join(__dirname, 'node_modules', 'vue', 'dist', 'vue.min.js'),
+      Vuex : path.join(__dirname, 'node_modules', 'vuex', 'dist', 'vuex.js'),
+      logger : path.join(__dirname, 'node_modules', 'vuex', 'logger.js')
     }
   },
 
@@ -49,7 +51,8 @@ module.exports = {
       $: "jquery",
       Backbone : 'backbone',
       _ : 'lodash',
-      Vue : 'Vue'
+      Vue : 'Vue',
+      Vuex : 'Vuex'
     })
   ]
 

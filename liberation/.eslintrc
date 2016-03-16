@@ -10,7 +10,8 @@
     "Vue": true,
     "_": true,
     "Backbone": true,
-    "$":true
+    "$":true,
+    "Vuex" : true
   },
   "extends": "eslint:recommended",
   "rules" : {

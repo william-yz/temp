@@ -7,31 +7,31 @@
 </template>
 
 <script>
+  var TYPE = require('../MutationTypes');
   module.exports = {
     data() {
       return {
         tableName : 'course'
       };
     },
-    methods : {
-      submit : function (event) {
-        $.get('/api/table/' + this.tableName, function (data) {
-          console.log(data);
-        })
+
+    vuex : {
+
+      actions : {
+        submit({ dispatch, state }) {
+          $.get('/api/table/' + this.tableName, function (data) {
+            data.columns.forEach(column => {
+              dispatch(TYPE.ADD_COMPONENT, column);
+            });
+          });
+        }
       }
     }
   }
 </script>
 
 <style lang="stylus" media="screen" scoped>
-button, input
-  opacity 0.4
-  border 1px solid white
-  width 100px
-  margin 10px
 
-#submitBtn:hover
-  opacity 0.7
 
 
 #tableName:focus

@@ -1,8 +1,10 @@
 'use strict';
 
 // require('./styles/main.styl');
-var App = require('./App');
+const App = require('./App');
+const store = require('./store');
 new Vue({
   el : 'body',
-  components : { App }
+  components : { App },
+  store
 })
