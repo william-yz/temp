@@ -49,11 +49,14 @@
 	// require('./styles/main.styl');
 	const App = __webpack_require__(2);
 	const store = __webpack_require__(41);
+	const models = __webpack_require__(47);
+	Vue.Models = models;
+
 	new Vue({
 	  el : 'body',
 	  components : { App },
 	  store
-	})
+	});
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
@@ -425,7 +428,7 @@
 	'use strict';
 
 	var HeaderSection = __webpack_require__(8);
-	var ViewPanel = __webpack_require__(16);
+	var ViewPanel = __webpack_require__(18);
 	var Manager = __webpack_require__(30);
 	var Selector = __webpack_require__(35);
 	module.exports = {
@@ -448,7 +451,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\modules\\header\\HeaderSection.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(15)
+	__vue_template__ = __webpack_require__(17)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -510,9 +513,9 @@
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	/* WEBPACK VAR INJECTION */(function($, Vue, _) {'use strict';
 
-	var TYPE = __webpack_require__(14);
+	var TYPE = __webpack_require__(16);
 	module.exports = {
 	  data: function data() {
 	    return {
@@ -530,14 +533,15 @@
 
 	        $.get('/api/table/' + this.tableName, function (data) {
 	          data.columns.forEach(function (column) {
-	            dispatch(TYPE.ADD_COMPONENT, column);
+	            dispatch(TYPE.COMPONENTS_ADD, Vue.Models.ComponentModel.create(column));
+	            dispatch(TYPE.STYLE_INIT, _.last(state.ComponentsStore._ids));
 	          });
 	        });
 	      }
 	    }
 	  }
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12), __webpack_require__(1), __webpack_require__(14)))
 
 /***/ },
 /* 12 */
@@ -559,211 +563,6 @@
 
 /***/ },
 /* 14 */
-/***/ function(module, exports) {
-
-	'use strict';
-	const ADD_COMPONENT = 'ADD_COMPONENT';
-	const SELECT_COMPONENT = 'SELECT_COMPONENT';
-
-	module.exports = {
-	  ADD_COMPONENT,
-	  SELECT_COMPONENT
-	}
-
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div _v-ac06e7a0=\"\">\n  <label for=\"tableName\" _v-ac06e7a0=\"\">Table Name: <input id=\"tableName\" v-model=\"tableName\" _v-ac06e7a0=\"\"></label>\n  <button type=\"button\" id=\"submitBtn\" @click=\"submit\" _v-ac06e7a0=\"\">Submit</button>\n  <button type=\"button\" id=\"saveBtn\" @click=\"save\" _v-ac06e7a0=\"\">Save</button>\n</div>\n";
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__webpack_require__(17)
-	__vue_script__ = __webpack_require__(19)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\modules\\view\\ViewPanel.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(29)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "d:\\source\\temp\\liberation\\src\\modules\\view\\ViewPanel.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(18);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(6)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4861b14f&scoped=true!./../../../node_modules/stylus-loader/index.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ViewPanel.vue", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4861b14f&scoped=true!./../../../node_modules/stylus-loader/index.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ViewPanel.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(5)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".view[_v-4861b14f] {\n  border: 1px #d7fbbc solid;\n  width: 70%;\n  height: 500px;\n}\n.view[_v-4861b14f] {\n  float: left;\n  margin: 0px 5px;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ComponentDistributor = __webpack_require__(20);
-	module.exports = {
-	  components: {
-	    ComponentDistributor: ComponentDistributor
-	  }
-	};
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(21)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\modules\\components\\ComponentDistributor.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(28)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "d:\\source\\temp\\liberation\\src\\modules\\components\\ComponentDistributor.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var InputComponent = __webpack_require__(22);
-	module.exports = {
-	  components: {
-	    InputComponent: InputComponent
-	  },
-
-	  vuex: {
-	    getters: {
-	      storedComponents: function storedComponents(_ref) {
-	        var ComponentsStore = _ref.ComponentsStore;
-
-	        return ComponentsStore.storedComponents;
-	      },
-	      _ids: function _ids(_ref2) {
-	        var ComponentsStore = _ref2.ComponentsStore;
-
-	        return ComponentsStore._ids;
-	      }
-	    }
-	  }
-
-	};
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(23)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\modules\\components\\input\\InputComponent.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(27)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) {
-	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
-	}
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "d:\\source\\temp\\liberation\\src\\modules\\components\\input\\InputComponent.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(_) {'use strict';
-
-	var TYPE = __webpack_require__(14);
-	var ComponentActions = __webpack_require__(26);
-	var actions = {};
-	console.log(_.merge(ComponentActions, actions));
-	module.exports = {
-	  props: ['_id'],
-	  vuex: {
-	    actions: _.merge(ComponentActions, actions)
-	  }
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
-
-/***/ },
-/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -887,10 +686,10 @@
 	"\xd8":"O","\xf2":"o","\xf3":"o","\xf4":"o","\xf5":"o","\xf6":"o","\xf8":"o","\xd9":"U","\xda":"U","\xdb":"U","\xdc":"U","\xf9":"u","\xfa":"u","\xfb":"u","\xfc":"u","\xdd":"Y","\xfd":"y","\xff":"y","\xc6":"Ae","\xe6":"ae","\xde":"Th","\xfe":"th","\xdf":"ss"},Mn={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","`":"&#96;"},Ln={"&amp;":"&","&lt;":"<","&gt;":">","&quot;":'"',"&#39;":"'","&#96;":"`"},$n={"function":true,object:true},Fn={"\\":"\\","'":"'","\n":"n","\r":"r","\u2028":"u2028","\u2029":"u2029"
 	},Nn=parseFloat,Dn=parseInt,Zn=$n[typeof exports]&&exports&&!exports.nodeType?exports:q,qn=$n[typeof module]&&module&&!module.nodeType?module:q,Pn=qn&&qn.exports===Zn?Zn:q,Tn=I($n[typeof self]&&self),Kn=I($n[typeof window]&&window),Gn=I($n[typeof this]&&this),Vn=I(Zn&&qn&&typeof global=="object"&&global)||Kn!==(Gn&&Gn.window)&&Kn||Tn||Gn||Function("return this")(),Jn=Z();(Kn||Tn||{})._=Jn, true? !(__WEBPACK_AMD_DEFINE_RESULT__ = function(){return Jn}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):Zn&&qn?(Pn&&((qn.exports=Jn)._=Jn),
 	Zn._=Jn):Vn._=Jn}).call(this);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)(module), (function() { return this; }())))
 
 /***/ },
-/* 25 */
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -906,15 +705,239 @@
 
 
 /***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	'use strict';
+	const COMPONENTS_ADD = 'COMPONENTS_ADD';
+	const COMPONENTS_SELECT = 'COMPONENTS_SELECT';
+	const STYLE_INIT = 'STYLE_INIT';
+	const STYLE_UPDATE = 'STYLE_UPDATE';
+	module.exports = {
+	  COMPONENTS_ADD,
+	  COMPONENTS_SELECT,
+	  STYLE_INIT,
+	  STYLE_UPDATE
+	};
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div _v-ac06e7a0=\"\">\n  <label for=\"tableName\" _v-ac06e7a0=\"\">Table Name: <input id=\"tableName\" v-model=\"tableName\" _v-ac06e7a0=\"\"></label>\n  <button type=\"button\" id=\"submitBtn\" @click=\"submit\" _v-ac06e7a0=\"\">Submit</button>\n  <button type=\"button\" id=\"saveBtn\" @click=\"save\" _v-ac06e7a0=\"\">Save</button>\n</div>\n";
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(19)
+	__vue_script__ = __webpack_require__(21)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\modules\\view\\ViewPanel.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(29)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "d:\\source\\temp\\liberation\\src\\modules\\view\\ViewPanel.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(20);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(6)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4861b14f&scoped=true!./../../../node_modules/stylus-loader/index.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ViewPanel.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4861b14f&scoped=true!./../../../node_modules/stylus-loader/index.js!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./ViewPanel.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(5)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".view[_v-4861b14f] {\n  border: 1px #d7fbbc solid;\n  width: 70%;\n  height: 500px;\n}\n.view[_v-4861b14f] {\n  float: left;\n  margin: 0px 5px;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var ComponentDistributor = __webpack_require__(22);
+	module.exports = {
+	  components: {
+	    ComponentDistributor: ComponentDistributor
+	  }
+	};
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__vue_script__ = __webpack_require__(23)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\modules\\components\\ComponentDistributor.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(28)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "d:\\source\\temp\\liberation\\src\\modules\\components\\ComponentDistributor.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var InputComponent = __webpack_require__(24);
+	module.exports = {
+	  components: {
+	    InputComponent: InputComponent
+	  },
+
+	  vuex: {
+	    getters: {
+	      storedComponents: function storedComponents(_ref) {
+	        var ComponentsStore = _ref.ComponentsStore;
+
+	        return ComponentsStore.storedComponents;
+	      },
+	      _ids: function _ids(_ref2) {
+	        var ComponentsStore = _ref2.ComponentsStore;
+
+	        return ComponentsStore._ids;
+	      }
+	    }
+	  }
+
+	};
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__vue_script__ = __webpack_require__(25)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\modules\\components\\input\\InputComponent.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(27)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "d:\\source\\temp\\liberation\\src\\modules\\components\\input\\InputComponent.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {'use strict';
+
+	var TYPE = __webpack_require__(16);
+	var ComponentActions = __webpack_require__(26);
+	var actions = {};
+	module.exports = {
+	  props: ['_id'],
+	  vuex: {
+	    actions: _.merge(ComponentActions, actions),
+	    getters: {
+	      storedStyles: function storedStyles(_ref) {
+	        var StyleStore = _ref.StyleStore;
+
+	        console.log(StyleStore);
+	        return StyleStore.styles;
+	      }
+	    }
+	  },
+
+	  computed: {
+	    classes: function classes() {
+	      return this.storedStyles[this._id].classes;
+	    },
+	    styles: function styles() {
+	      return this.storedStyles[this._id].styles;
+	    }
+	  }
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+
+/***/ },
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	const TYPE = __webpack_require__(14);
+	const TYPE = __webpack_require__(16);
 
 	const actions = {
 	  onSelect(funcs) {
-	    funcs.dispatch(TYPE.SELECT_COMPONENT, this._id);
+	    funcs.dispatch(TYPE.COMPONENTS_SELECT, this._id);
 	  }
 	};
 
@@ -926,7 +949,7 @@
 /* 27 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<label for=\"\"></label>\n<input @click=\"onSelect\" />\n";
+	module.exports = "\n<label for=\"\"></label>\n<input @click=\"onSelect\" :class=\"classes\" :style=\"styles\"/>\n";
 
 /***/ },
 /* 28 */
@@ -1011,17 +1034,57 @@
 
 /***/ },
 /* 33 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {'use strict';
 
-	module.exports = {};
+	var TYPE = __webpack_require__(16);
+	module.exports = {
+	  vuex: {
+	    getters: {
+	      styles: function styles(_ref) {
+	        var StyleStore = _ref.StyleStore;
+
+	        return StyleStore.styles[StyleStore.selectedId].styles;
+	      },
+	      isSelected: function isSelected(_ref2) {
+	        var StyleStore = _ref2.StyleStore;
+
+	        return StyleStore.selected;
+	      }
+	    },
+
+	    actions: {
+	      updateWidth: function updateWidth(_ref3, e) {
+	        var dispatch = _ref3.dispatch;
+
+	        dispatch(TYPE.STYLE_UPDATE, {
+	          width: e.target.value + 'px'
+	        });
+	      }
+	    }
+
+	  },
+
+	  computed: {
+	    width: function width() {
+	      return this.styles.width;
+	    }
+	  },
+
+	  filters: {
+	    cut: function cut(px) {
+	      return _.replace(px, 'px', '');
+	    }
+	  }
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ },
 /* 34 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"general\" _v-7b5e1ee7=\"\">\n  <div class=\"alignment-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Alignment</label>\n    <button type=\"button\" _v-7b5e1ee7=\"\">none</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">left</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">right</button>\n  </div>\n\n  <div class=\"display-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Display</label>\n    <button type=\"button\" _v-7b5e1ee7=\"\">block</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">inline</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">inline-block</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">none</button>\n  </div>\n\n  <div class=\"position-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Position</label>\n    <button type=\"button\" _v-7b5e1ee7=\"\">Static</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">relative</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">absolute</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">fixed</button>\n  </div>\n  <div class=\"top-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Top</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"right-choose\" _v-7b5e1ee7=\"\">\n    <label style=\"\" _v-7b5e1ee7=\"\">Right</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"left-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Left</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"bottom-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Bottom</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n\n</div>\n";
+	module.exports = "\n<div class=\"general\" v-show=\"isSelected\" _v-7b5e1ee7=\"\">\n  <div class=\"alignment-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Alignment</label>\n    <button type=\"button\" _v-7b5e1ee7=\"\">none</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">left</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">right</button>\n  </div>\n\n  <div class=\"display-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Display</label>\n    <button type=\"button\" _v-7b5e1ee7=\"\">block</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">inline</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">inline-block</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">none</button>\n  </div>\n\n  <div class=\"position-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Position</label>\n    <button type=\"button\" _v-7b5e1ee7=\"\">Static</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">relative</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">absolute</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">fixed</button>\n  </div>\n  <div class=\"top-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Top</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"right-choose\" _v-7b5e1ee7=\"\">\n    <label style=\"\" _v-7b5e1ee7=\"\">Right</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"left-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Left</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"bottom-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Bottom</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"Width\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Width</label>\n    <input type=\"number\" :value=\"width | cut\" @change=\"updateWidth\" _v-7b5e1ee7=\"\">\n  </div>\n</div>\n";
 
 /***/ },
 /* 35 */
@@ -1747,12 +1810,13 @@
 
 	'use strict';
 
+	const store = __webpack_require__(41);
+	const TYPE = __webpack_require__(16);
 
-	const TYPE = __webpack_require__(14);
 	const state = {
 	  _ids : [],
 	  storedComponents : {
-	  },
+	  }
 
 	};
 	var idGenterator = (function* () {
@@ -1763,7 +1827,7 @@
 	})();
 
 	const mutations = {
-	  [TYPE.ADD_COMPONENT](state, component) {
+	  [TYPE.COMPONENTS_ADD](state, component) {
 	    var _id = idGenterator.next().value;
 	    component._id = _id;
 	    component.type = 'InputComponent';
@@ -1782,28 +1846,36 @@
 /* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(Vue, _) {'use strict';
 
 
-	const TYPE = __webpack_require__(14);
+	const TYPE = __webpack_require__(16);
 	const state = {
 	  selected : false,
 	  selectedId : '',
 	  styles : {
-	  },
+	  }
 
 	};
-	var idGenterator = (function* () {
-	  var n = 0;
-	  while(true) {
-	    yield '_id' + n++;
-	  }
-	})();
 
 	const mutations = {
-	  [TYPE.SELECT_COMPONENT](state, _id) {
+	  [TYPE.STYLE_INIT](state, _id) {
+	    var model = Vue.Models.StyleModel.create({
+	      styles : {
+	        width : '200px'
+	      },
+	      classes : ['haha']
+	    });
+	    Vue.set(state.styles,_id,model);
+	  },
+
+	  [TYPE.COMPONENTS_SELECT](state, _id) {
 	    state.selected = true;
 	    state.selectedId = _id;
+	  },
+
+	  [TYPE.STYLE_UPDATE](state, updateStyle) {
+	    _.assign(state.styles[state.selectedId].styles, updateStyle);
 	  }
 	}
 
@@ -1812,6 +1884,7 @@
 	  mutations
 	};
 
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(14)))
 
 /***/ },
 /* 46 */
@@ -1876,6 +1949,100 @@
 	}
 
 	module.exports = createLogger;
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {'use strict';
+	const ComponentModel = __webpack_require__(48);
+	const StyleModel = __webpack_require__(49);
+	const modules = {
+	  ComponentModel,
+	  StyleModel
+	};
+
+
+	var Model = function (config) {
+	  var modules = config.modules;
+	  for (var key in modules) {
+	    var theModule = modules[key];
+	    if (!theModule && typeof(theModule) !== 'object') {
+	      throw new Error('Error in Model('+ key +') Config. Model must be an Object (Object or Array)');
+	    }
+	    this[key] = _.create(Model.prototype, {
+	      propConfigs : theModule
+	    });
+	  }
+	};
+
+
+	Model.prototype.create = function (props) {
+	  var propConfigs = this.propConfigs,
+	      propNames,
+	      model = {};
+	  if (propConfigs instanceof Array) {
+	    propNames = propConfigs;
+	  } else {
+	    propNames = Object.getOwnPropertyNames(propConfigs);
+	  }
+	  propNames.forEach(function (propName) {
+	    var propConfig = propConfigs[propName],
+	        prop = props[propName],
+	        propType = 'none',
+	        propRequired = false;
+	    if (typeof(propConfig) === 'string') {
+	      propType = propConfig;
+	    }
+	    if (typeof(propConfig) === 'object') {
+	      propType = propConfig.type;
+	      propRequired = propConfig.propRequired === undefined ? false : propConfig.propRequired;
+	    }
+	    if (prop === undefined) {
+	      if (propRequired) {
+	        throw new Error('Property : ' + propName + 'is required.');
+	      } else {
+	        return;
+	      }
+	    }
+	    if (propType !== 'none' && typeof(prop) !== propType) {
+	      throw new Error('Property : ' + propName + ', defined type:' + propType + ', actrual :' +  typeof(prop));
+	    }
+	    model[propName] = prop;
+	  });
+	  return model;
+	}
+
+	module.exports = new Model({
+	  modules
+	});
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	// module.exports = {
+	//   _id : 'String',
+	//   type : 'String'
+	// }
+	module.exports = ['_id', 'type', 'name', 'defaultValue', 'nullable', 'dataType', 'maxLength'];
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {
+	  styles : 'object',
+	  classes : 'object'
+	};
+
 
 /***/ }
 /******/ ]);

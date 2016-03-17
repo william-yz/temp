@@ -15,11 +15,11 @@
   },
   "extends": "eslint:recommended",
   "rules" : {
-    "no-console" : 0,
+    "no-console" : 1,
     "prefer-const" : 2,
     "strict" : 2,
     "no-extra-boolean-cast" : 0,
-    "no-unused-vars" : 1
-
+    "no-unused-vars" : 1,
+    'no-constant-condition' : 0
   }
 }

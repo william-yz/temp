@@ -21,8 +21,10 @@
         submit({ dispatch, state }) {
           $.get('/api/table/' + this.tableName, function (data) {
             data.columns.forEach(column => {
-              dispatch(TYPE.ADD_COMPONENT, column);
+              dispatch(TYPE.COMPONENTS_ADD, Vue.Models.ComponentModel.create(column));
+              dispatch(TYPE.STYLE_INIT, _.last(state.ComponentsStore._ids));
             });
+
           });
         }
       }

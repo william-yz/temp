@@ -1,11 +1,12 @@
 'use strict';
 
-
+const store = require('../store');
 const TYPE = require('../MutationTypes');
+
 const state = {
   _ids : [],
   storedComponents : {
-  },
+  }
 
 };
 var idGenterator = (function* () {
@@ -16,7 +17,7 @@ var idGenterator = (function* () {
 })();
 
 const mutations = {
-  [TYPE.ADD_COMPONENT](state, component) {
+  [TYPE.COMPONENTS_ADD](state, component) {
     var _id = idGenterator.next().value;
     component._id = _id;
     component.type = 'InputComponent';

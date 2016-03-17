@@ -1,6 +1,6 @@
 <template>
   <label for=""></label>
-  <input @click="onSelect" />
+  <input @click="onSelect" :class="classes" :style="styles"/>
 </template>
 
 <script>
@@ -9,11 +9,26 @@
   var actions = {
 
   };
-  console.log(_.merge(ComponentActions,actions) );
   module.exports = {
     props : ['_id'],
     vuex : {
-      actions : _.merge(ComponentActions,actions)
+      actions : _.merge(ComponentActions,actions),
+      getters : {
+        storedStyles({StyleStore}) {
+          console.log(StyleStore);
+          return StyleStore.styles;
+        }
+      }
+    },
+
+    computed : {
+      classes() {
+        return this.storedStyles[this._id].classes;
+      },
+
+      styles() {
+        return this.storedStyles[this._id].styles;
+      }
     }
   }
 </script>

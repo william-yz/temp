@@ -37,7 +37,7 @@ module.exports = {
     root : [path.join(__dirname, 'src')],
     extensions : ['', '.js', '.css', '.styl', '.vue'],
     alias : {
-      // jquery : path.join(__dirname, 'node_modules', 'jquery', 'dist', 'jquery.min.js'),
+      jquery : path.join(__dirname, 'node_modules', 'jquery', 'dist', 'jquery.min.js'),
       lodash : path.join(__dirname, 'node_modules', 'lodash', 'lodash.min.js'),
       // backbone : path.join(__dirname, 'node_modules', 'backbone', 'backbone-min.js'),
       Vue : path.join(__dirname, 'node_modules', 'vue', 'dist', 'vue.min.js'),
@@ -48,7 +48,7 @@ module.exports = {
 
   plugins : [
     new webpack.ProvidePlugin({
-      // $: "jquery",
+      $: "jquery",
       // Backbone : 'backbone',
       _ : 'lodash',
       Vue : 'Vue',

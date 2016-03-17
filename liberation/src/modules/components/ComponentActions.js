@@ -3,7 +3,7 @@ const TYPE = require('../MutationTypes');
 
 const actions = {
   onSelect(funcs) {
-    funcs.dispatch(TYPE.SELECT_COMPONENT, this._id);
+    funcs.dispatch(TYPE.COMPONENTS_SELECT, this._id);
   }
 };
 

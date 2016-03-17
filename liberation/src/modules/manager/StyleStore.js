@@ -6,20 +6,28 @@ const state = {
   selected : false,
   selectedId : '',
   styles : {
-  },
+  }
 
 };
-var idGenterator = (function* () {
-  var n = 0;
-  while(true) {
-    yield '_id' + n++;
-  }
-})();
 
 const mutations = {
-  [TYPE.SELECT_COMPONENT](state, _id) {
+  [TYPE.STYLE_INIT](state, _id) {
+    var model = Vue.Models.StyleModel.create({
+      styles : {
+        width : '200px'
+      },
+      classes : ['haha']
+    });
+    Vue.set(state.styles,_id,model);
+  },
+
+  [TYPE.COMPONENTS_SELECT](state, _id) {
     state.selected = true;
     state.selectedId = _id;
+  },
+
+  [TYPE.STYLE_UPDATE](state, updateStyle) {
+    _.assign(state.styles[state.selectedId].styles, updateStyle);
   }
 }
 

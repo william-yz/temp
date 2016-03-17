@@ -1,5 +1,5 @@
 <template>
-<div class="general">
+<div class="general" v-show="isSelected">
   <div class="alignment-choose">
     <label>Alignment</label>
     <button type="button">none</button>
@@ -36,15 +36,50 @@
   </div>
   <div class="bottom-choose">
     <label>Bottom</label>
-    <input type="number"value="">
+    <input type="number" value="">
   </div>
-
+  <div class="Width">
+    <label>Width</label>
+    <input type="number" :value="width | cut" @change="updateWidth">
+  </div>
 </div>
 </template>
 
 <script>
+var TYPE = require('../MutationTypes');
 module.exports = {
+  vuex : {
+    getters : {
+      styles({StyleStore}) {
+        return StyleStore.styles[StyleStore.selectedId].styles;
+      },
 
+      isSelected({StyleStore}) {
+        return StyleStore.selected;
+      }
+    },
+
+    actions : {
+      updateWidth({dispatch}, e) {
+        dispatch(TYPE.STYLE_UPDATE, {
+          width : e.target.value + 'px'
+        })
+      }
+    }
+
+  },
+
+  computed : {
+      width() {
+        return this.styles.width;
+      }
+  },
+
+  filters : {
+    cut(px) {
+      return _.replace(px,'px','');
+    }
+  }
 }
 </script>
 
