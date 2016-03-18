@@ -48,8 +48,8 @@
 
 	// require('./styles/main.styl');
 	const App = __webpack_require__(2);
-	const store = __webpack_require__(41);
-	const models = __webpack_require__(47);
+	const store = __webpack_require__(46);
+	const models = __webpack_require__(52);
 	Vue.Models = models;
 
 	new Vue({
@@ -85,7 +85,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\App.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(40)
+	__vue_template__ = __webpack_require__(45)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -429,8 +429,8 @@
 
 	var HeaderSection = __webpack_require__(8);
 	var ViewPanel = __webpack_require__(18);
-	var Manager = __webpack_require__(30);
-	var Selector = __webpack_require__(35);
+	var Manager = __webpack_require__(35);
+	var Selector = __webpack_require__(40);
 	module.exports = {
 	  components: {
 	    Selector: Selector,
@@ -532,9 +532,17 @@
 	        var state = _ref.state;
 
 	        $.get('/api/table/' + this.tableName, function (data) {
+	          var type = 'PanelComponent',
+	              sub_ids = [];
+	          var panel = Vue.Models.ComponentModel.create({ type: type, sub_ids: sub_ids });
+	          dispatch(TYPE.COMPONENTS_ADD, panel);
+	          dispatch(TYPE.STYLE_INIT, _.last(panel._id));
 	          data.columns.forEach(function (column) {
-	            dispatch(TYPE.COMPONENTS_ADD, Vue.Models.ComponentModel.create(column));
-	            dispatch(TYPE.STYLE_INIT, _.last(state.ComponentsStore._ids));
+	            var model = Vue.Models.ComponentModel.create(column);
+	            panel.sub_ids.push(model._id);
+	            model.type = 'InputComponent';
+	            dispatch(TYPE.COMPONENTS_ADD, model);
+	            dispatch(TYPE.STYLE_INIT, _.last(model._id));
 	          });
 	        });
 	      }
@@ -725,7 +733,7 @@
 /* 17 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div _v-ac06e7a0=\"\">\n  <label for=\"tableName\" _v-ac06e7a0=\"\">Table Name: <input id=\"tableName\" v-model=\"tableName\" _v-ac06e7a0=\"\"></label>\n  <button type=\"button\" id=\"submitBtn\" @click=\"submit\" _v-ac06e7a0=\"\">Submit</button>\n  <button type=\"button\" id=\"saveBtn\" @click=\"save\" _v-ac06e7a0=\"\">Save</button>\n</div>\n";
+	module.exports = "\n<div _v-ac06e7a0=\"\">\n  <label for=\"tableName\" _v-ac06e7a0=\"\">Table Name: <input id=\"tableName\" v-model=\"tableName\" _v-ac06e7a0=\"\"></label>\n  <button type=\"button\" id=\"submitBtn\" @click=\"submit\" _v-ac06e7a0=\"\">Add</button>\n  <button type=\"button\" id=\"saveBtn\" @click=\"save\" _v-ac06e7a0=\"\">Save</button>\n</div>\n";
 
 /***/ },
 /* 18 */
@@ -738,7 +746,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\modules\\view\\ViewPanel.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(29)
+	__vue_template__ = __webpack_require__(34)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -791,7 +799,7 @@
 
 
 	// module
-	exports.push([module.id, ".view[_v-4861b14f] {\n  border: 1px #d7fbbc solid;\n  width: 70%;\n  height: 500px;\n}\n.view[_v-4861b14f] {\n  float: left;\n  margin: 0px 5px;\n}\n", ""]);
+	exports.push([module.id, ".view[_v-4861b14f] {\n  border: 1px #d7fbbc solid;\n  width: 70%;\n  height: 600px;\n  float: left;\n  margin: 0px 5px;\n  padding: 10px;\n}\n", ""]);
 
 	// exports
 
@@ -819,7 +827,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\modules\\components\\ComponentDistributor.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(28)
+	__vue_template__ = __webpack_require__(33)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -844,9 +852,13 @@
 	'use strict';
 
 	var InputComponent = __webpack_require__(24);
+	var PanelComponent = __webpack_require__(30);
 	module.exports = {
+	  props: ['_id'],
+
 	  components: {
-	    InputComponent: InputComponent
+	    InputComponent: InputComponent,
+	    PanelComponent: PanelComponent
 	  },
 
 	  vuex: {
@@ -856,11 +868,18 @@
 
 	        return ComponentsStore.storedComponents;
 	      },
-	      _ids: function _ids(_ref2) {
+	      frist_id: function frist_id(_ref2) {
 	        var ComponentsStore = _ref2.ComponentsStore;
 
-	        return ComponentsStore._ids;
+	        return ComponentsStore._ids[0];
 	      }
+	    }
+	  },
+
+	  computed: {
+	    thisComponent: function thisComponent() {
+	      console.log(this.storedComponents[this._id].sub_ids);
+	      return this.storedComponents[this._id];
 	    }
 	  }
 
@@ -871,12 +890,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(25)
+	__webpack_require__(25)
+	__vue_script__ = __webpack_require__(27)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\modules\\components\\input\\InputComponent.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(27)
+	  console.warn("[vue-loader] src\\modules\\components\\components\\Input.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(29)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -886,7 +906,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "d:\\source\\temp\\liberation\\src\\modules\\components\\input\\InputComponent.vue"
+	  var id = "d:\\source\\temp\\liberation\\src\\modules\\components\\components\\Input.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -898,10 +918,50 @@
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(26);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(6)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-5c2bac73&scoped=true!./../../../../node_modules/stylus-loader/index.js!./../../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./Input.vue", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-5c2bac73&scoped=true!./../../../../node_modules/stylus-loader/index.js!./../../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./Input.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(5)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".l-selected[_v-5c2bac73] {\n  border: 1px solid;\n}\n.l-default[_v-5c2bac73] {\n  border: none;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(_) {'use strict';
 
 	var TYPE = __webpack_require__(16);
-	var ComponentActions = __webpack_require__(26);
+	var ComponentActions = __webpack_require__(28);
 	var actions = {};
 	module.exports = {
 	  props: ['_id'],
@@ -911,8 +971,12 @@
 	      storedStyles: function storedStyles(_ref) {
 	        var StyleStore = _ref.StyleStore;
 
-	        console.log(StyleStore);
 	        return StyleStore.styles;
+	      },
+	      storedComponents: function storedComponents(_ref2) {
+	        var ComponentsStore = _ref2.ComponentsStore;
+
+	        return ComponentsStore.storedComponents;
 	      }
 	    }
 	  },
@@ -923,13 +987,16 @@
 	    },
 	    styles: function styles() {
 	      return this.storedStyles[this._id].styles;
+	    },
+	    component: function component() {
+	      return this.storedComponents[this._id];
 	    }
 	  }
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -946,35 +1013,77 @@
 
 
 /***/ },
-/* 27 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<label for=\"\"></label>\n<input @click=\"onSelect\" :class=\"classes\" :style=\"styles\"/>\n";
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	module.exports = "\n<div class='component-container'>\n  <component v-for=\"id in _ids\" :is=\"storedComponents[id].type\" :_id=\"id\"></component>\n</div>\n\n\n";
-
-/***/ },
 /* 29 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<section class=\"view\" _v-4861b14f=\"\">\n  {{tableName}}\n  <component-distributor _v-4861b14f=\"\"></component-distributor>\n</section>\n";
+	module.exports = "\n<div :class=\"classes\" @click=\"onSelect\" :style=\"styles\" _v-5c2bac73=\"\">\n  <label for=\"\" _v-5c2bac73=\"\">{{component.name}}</label>\n  <input _v-5c2bac73=\"\">\n</div>\n";
 
 /***/ },
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(31)
-	__vue_script__ = __webpack_require__(33)
+	__vue_script__ = __webpack_require__(31)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\modules\\components\\components\\Panel.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(32)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) {
+	(typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports).template = __vue_template__
+	}
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "d:\\source\\temp\\liberation\\src\\modules\\components\\components\\Panel.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = {};
+
+/***/ },
+/* 32 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div>\n\n</div>\n";
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div class='component-container'>\n  <!-- <component v-for=\"id in _ids\" :is=\"storedComponents[id].type\" :_id=\"id\"></component> -->\n\n  <component :is=\"thisComponent.type\" :_id='_id'>\n    <component-distributor :_id='thisComponent.sub_ids[0]'></component-distributor>\n  </component>\n</div>\n\n\n";
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<section class=\"view\" _v-4861b14f=\"\">\n  {{tableName}}\n  <component-distributor _id=\"_id0\" _v-4861b14f=\"\"></component-distributor>\n</section>\n";
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(36)
+	__vue_script__ = __webpack_require__(38)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\modules\\manager\\Manager.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(34)
+	__vue_template__ = __webpack_require__(39)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -993,13 +1102,13 @@
 	})()}
 
 /***/ },
-/* 31 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(32);
+	var content = __webpack_require__(37);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(6)(content, {});
@@ -1019,7 +1128,7 @@
 	}
 
 /***/ },
-/* 32 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(5)();
@@ -1033,7 +1142,7 @@
 
 
 /***/ },
-/* 33 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {'use strict';
@@ -1081,23 +1190,23 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ },
-/* 34 */
+/* 39 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div class=\"general\" v-show=\"isSelected\" _v-7b5e1ee7=\"\">\n  <div class=\"alignment-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Alignment</label>\n    <button type=\"button\" _v-7b5e1ee7=\"\">none</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">left</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">right</button>\n  </div>\n\n  <div class=\"display-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Display</label>\n    <button type=\"button\" _v-7b5e1ee7=\"\">block</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">inline</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">inline-block</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">none</button>\n  </div>\n\n  <div class=\"position-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Position</label>\n    <button type=\"button\" _v-7b5e1ee7=\"\">Static</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">relative</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">absolute</button>\n    <button type=\"button\" _v-7b5e1ee7=\"\">fixed</button>\n  </div>\n  <div class=\"top-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Top</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"right-choose\" _v-7b5e1ee7=\"\">\n    <label style=\"\" _v-7b5e1ee7=\"\">Right</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"left-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Left</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"bottom-choose\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Bottom</label>\n    <input type=\"number\" value=\"\" _v-7b5e1ee7=\"\">\n  </div>\n  <div class=\"Width\" _v-7b5e1ee7=\"\">\n    <label _v-7b5e1ee7=\"\">Width</label>\n    <input type=\"number\" :value=\"width | cut\" @change=\"updateWidth\" _v-7b5e1ee7=\"\">\n  </div>\n</div>\n";
 
 /***/ },
-/* 35 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(36)
-	__vue_script__ = __webpack_require__(38)
+	__webpack_require__(41)
+	__vue_script__ = __webpack_require__(43)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\modules\\selector\\Selector.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(39)
+	__vue_template__ = __webpack_require__(44)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) {
@@ -1116,13 +1225,13 @@
 	})()}
 
 /***/ },
-/* 36 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(37);
+	var content = __webpack_require__(42);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(6)(content, {});
@@ -1142,7 +1251,7 @@
 	}
 
 /***/ },
-/* 37 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(5)();
@@ -1156,7 +1265,7 @@
 
 
 /***/ },
-/* 38 */
+/* 43 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1164,25 +1273,25 @@
 	module.exports = {};
 
 /***/ },
-/* 39 */
+/* 44 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<div id=\"selector-panel\" _v-7eeb50a5=\"\">\n  <div id=\"selector-selector\" _v-7eeb50a5=\"\">\n    <button type=\"button\" _v-7eeb50a5=\"\"> Selector </button>\n  </div>\n</div>\n\n";
 
 /***/ },
-/* 40 */
+/* 45 */
 /***/ function(module, exports) {
 
 	module.exports = "\n<header-section></header-section>\n\n<div id=\"editor\">\n  <selector></selector>\n  <view-panel></view-panel>\n  <manager></manager>\n</div>\n";
 
 /***/ },
-/* 41 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Vue, Vuex) {'use strict';
-	const HeaderStore = __webpack_require__(43);
-	const ComponentsStore = __webpack_require__(44);
-	const StyleStore = __webpack_require__(45);
+	const HeaderStore = __webpack_require__(48);
+	const ComponentsStore = __webpack_require__(49);
+	const StyleStore = __webpack_require__(50);
 
 
 	Vue.use(Vuex);
@@ -1192,15 +1301,16 @@
 	    HeaderStore,
 	    ComponentsStore,
 	    StyleStore
-	  },
+	  }
+	  ,
 
-	  middlewares: [__webpack_require__(46)()]
+	  middlewares: [__webpack_require__(51)()]
 	});
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(42)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(47)))
 
 /***/ },
-/* 42 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -1781,7 +1891,7 @@
 	}));
 
 /***/ },
-/* 43 */
+/* 48 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1805,34 +1915,25 @@
 
 
 /***/ },
-/* 44 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(Vue) {'use strict';
 
-	const store = __webpack_require__(41);
 	const TYPE = __webpack_require__(16);
 
 	const state = {
 	  _ids : [],
+	  _rootid : '',
 	  storedComponents : {
 	  }
 
 	};
-	var idGenterator = (function* () {
-	  var n = 0;
-	  while(true) {
-	    yield '_id' + n++;
-	  }
-	})();
 
 	const mutations = {
 	  [TYPE.COMPONENTS_ADD](state, component) {
-	    var _id = idGenterator.next().value;
-	    component._id = _id;
-	    component.type = 'InputComponent';
-	    state._ids.push(_id);
-	    state.storedComponents[_id] = component;
+	    state._ids.push(component._id);
+	    Vue.set(state.storedComponents,component._id,component);
 	  }
 	}
 
@@ -1841,9 +1942,10 @@
 	  mutations
 	};
 
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 45 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Vue, _) {'use strict';
@@ -1864,13 +1966,20 @@
 	      styles : {
 	        width : '200px'
 	      },
-	      classes : ['haha']
+	      classes : ['l-default']
 	    });
 	    Vue.set(state.styles,_id,model);
 	  },
 
 	  [TYPE.COMPONENTS_SELECT](state, _id) {
 	    state.selected = true;
+	    if (state.selectedId !== _id) {
+	      if (state.selectedId) {
+	        state.styles[state.selectedId].classes.$remove('l-selected');
+	      }
+	      state.styles[_id].classes.push('l-selected');
+	      state.styles[_id].classes.$remove('l-default');
+	    }
 	    state.selectedId = _id;
 	  },
 
@@ -1887,7 +1996,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(14)))
 
 /***/ },
-/* 46 */
+/* 51 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1951,17 +2060,23 @@
 	module.exports = createLogger;
 
 /***/ },
-/* 47 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {'use strict';
-	const ComponentModel = __webpack_require__(48);
-	const StyleModel = __webpack_require__(49);
+	const ComponentModel = __webpack_require__(53);
+	const StyleModel = __webpack_require__(54);
 	const modules = {
 	  ComponentModel,
 	  StyleModel
 	};
 
+	var idGenterator = (function* () {
+	  var n = 0;
+	  while(true) {
+	    yield '_id' + n++;
+	  }
+	})();
 
 	var Model = function (config) {
 	  var modules = config.modules;
@@ -2002,16 +2117,23 @@
 	      if (propRequired) {
 	        throw new Error('Property : ' + propName + 'is required.');
 	      } else {
-	        return;
+	        if (propType !== 'none' && typeof(prop) !== propType) {
+	          throw new Error('Property : ' + propName + ', defined type:' + propType + ', actrual :' +  typeof(prop));
+	        }
+	        if (propName === '_id' && !prop) {
+	          model[propName] = idGenterator.next().value;
+	        } else {
+	          model[propName] = null;
+	        }
 	      }
+	    } else {
+	      model[propName] = prop;
 	    }
-	    if (propType !== 'none' && typeof(prop) !== propType) {
-	      throw new Error('Property : ' + propName + ', defined type:' + propType + ', actrual :' +  typeof(prop));
-	    }
-	    model[propName] = prop;
 	  });
 	  return model;
 	}
+
+
 
 	module.exports = new Model({
 	  modules
@@ -2020,7 +2142,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ },
-/* 48 */
+/* 53 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2029,11 +2151,11 @@
 	//   _id : 'String',
 	//   type : 'String'
 	// }
-	module.exports = ['_id', 'type', 'name', 'defaultValue', 'nullable', 'dataType', 'maxLength'];
+	module.exports = ['_id', 'sub_ids', 'type', 'name', 'defaultValue', 'nullable', 'dataType', 'maxLength'];
 
 
 /***/ },
-/* 49 */
+/* 54 */
 /***/ function(module, exports) {
 
 	'use strict';

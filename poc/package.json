@@ -12,6 +12,7 @@
     "express": "^4.13.4",
     "lodash": "^4.6.1",
     "mysql": "^2.10.2",
+    "oracledb": "^1.7.1",
     "swig": "^1.4.2"
   },
   "devDependencies": {

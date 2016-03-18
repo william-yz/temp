@@ -16,13 +16,20 @@ const mutations = {
       styles : {
         width : '200px'
       },
-      classes : ['haha']
+      classes : ['l-default']
     });
     Vue.set(state.styles,_id,model);
   },
 
   [TYPE.COMPONENTS_SELECT](state, _id) {
     state.selected = true;
+    if (state.selectedId !== _id) {
+      if (state.selectedId) {
+        state.styles[state.selectedId].classes.$remove('l-selected');
+      }
+      state.styles[_id].classes.push('l-selected');
+      state.styles[_id].classes.$remove('l-default');
+    }
     state.selectedId = _id;
   },
 

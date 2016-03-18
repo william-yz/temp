@@ -11,7 +11,8 @@ module.exports = new Vuex.Store({
     HeaderStore,
     ComponentsStore,
     StyleStore
-  },
+  }
+  ,
 
   middlewares: [require('logger')()]
 });

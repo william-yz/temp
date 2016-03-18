@@ -6,6 +6,12 @@ const modules = {
   StyleModel
 };
 
+var idGenterator = (function* () {
+  var n = 0;
+  while(true) {
+    yield '_id' + n++;
+  }
+})();
 
 var Model = function (config) {
   var modules = config.modules;
@@ -46,16 +52,23 @@ Model.prototype.create = function (props) {
       if (propRequired) {
         throw new Error('Property : ' + propName + 'is required.');
       } else {
-        return;
+        if (propType !== 'none' && typeof(prop) !== propType) {
+          throw new Error('Property : ' + propName + ', defined type:' + propType + ', actrual :' +  typeof(prop));
+        }
+        if (propName === '_id' && !prop) {
+          model[propName] = idGenterator.next().value;
+        } else {
+          model[propName] = null;
+        }
       }
+    } else {
+      model[propName] = prop;
     }
-    if (propType !== 'none' && typeof(prop) !== propType) {
-      throw new Error('Property : ' + propName + ', defined type:' + propType + ', actrual :' +  typeof(prop));
-    }
-    model[propName] = prop;
   });
   return model;
 }
+
+
 
 module.exports = new Model({
   modules

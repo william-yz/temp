@@ -4,4 +4,4 @@
 //   _id : 'String',
 //   type : 'String'
 // }
-module.exports = ['_id', 'type', 'name', 'defaultValue', 'nullable', 'dataType', 'maxLength'];
+module.exports = ['_id', 'sub_ids', 'type', 'name', 'defaultValue', 'nullable', 'dataType', 'maxLength'];

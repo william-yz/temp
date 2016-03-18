@@ -1,7 +1,7 @@
 <template>
   <section class="view">
     {{tableName}}
-    <component-distributor></component-distributor>
+    <component-distributor _id="_id0"></component-distributor>
   </section>
 </template>
 
@@ -18,8 +18,8 @@ module.exports = {
 .view
   border 1px #D7FBBC solid
   width  70%
-  height 500px
-.view
+  height 600px;
   float left
   margin  0px 5px
+  padding 10px
 </style>

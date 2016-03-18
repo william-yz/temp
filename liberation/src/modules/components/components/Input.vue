@@ -1,6 +1,8 @@
 <template>
-  <label for=""></label>
-  <input @click="onSelect" :class="classes" :style="styles"/>
+  <div :class="classes" @click="onSelect" :style="styles">
+    <label for="" >{{component.name}}</label>
+    <input />
+  </div>
 </template>
 
 <script>
@@ -15,8 +17,11 @@
       actions : _.merge(ComponentActions,actions),
       getters : {
         storedStyles({StyleStore}) {
-          console.log(StyleStore);
           return StyleStore.styles;
+        },
+
+        storedComponents({ComponentsStore}) {
+          return ComponentsStore.storedComponents;
         }
       }
     },
@@ -28,7 +33,18 @@
 
       styles() {
         return this.storedStyles[this._id].styles;
+      },
+
+      component() {
+        return this.storedComponents[this._id];
       }
     }
   }
 </script>
+
+<style lang="stylus" media="screen" scoped>
+.l-selected
+  border 1px solid
+.l-default
+  border none
+</style>
