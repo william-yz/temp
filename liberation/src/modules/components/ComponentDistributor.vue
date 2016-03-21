@@ -2,9 +2,12 @@
   <div class='component-container'>
     <!-- <component v-for="id in _ids" :is="storedComponents[id].type" :_id="id"></component> -->
 
-    <component :is="thisComponent.type" :_id='_id'>
-      <component-distributor :_id='thisComponent.sub_ids[0]'></component-distributor>
-    </component>
+    <div :is="thisComponent.type" :_id='_id'></div>
+
+    <div v-if="thisComponent.type==='container'" class="l-container">
+      <component-distributor v-for="sub_id in thisComponent.sub_ids" :_id='sub_id'></component-distributor>
+    </div>
+
   </div>
 
 
@@ -15,6 +18,8 @@ var InputComponent = require('./components/Input');
 var PanelComponent = require('./components/Panel');
 module.exports = {
   props : ['_id'],
+
+  name : 'component-distributor',
 
   components: {
     InputComponent,
@@ -35,7 +40,7 @@ module.exports = {
 
   computed: {
     thisComponent() {
-      console.log(this.storedComponents[this._id].sub_ids);
+      console.log(this.storedComponents[this._id]);
       return this.storedComponents[this._id];
     }
   }

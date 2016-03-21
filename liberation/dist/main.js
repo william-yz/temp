@@ -532,7 +532,7 @@
 	        var state = _ref.state;
 
 	        $.get('/api/table/' + this.tableName, function (data) {
-	          var type = 'PanelComponent',
+	          var type = 'container',
 	              sub_ids = [];
 	          var panel = Vue.Models.ComponentModel.create({ type: type, sub_ids: sub_ids });
 	          dispatch(TYPE.COMPONENTS_ADD, panel);
@@ -811,6 +811,7 @@
 	'use strict';
 
 	var ComponentDistributor = __webpack_require__(22);
+	console.log(ComponentDistributor);
 	module.exports = {
 	  components: {
 	    ComponentDistributor: ComponentDistributor
@@ -856,6 +857,8 @@
 	module.exports = {
 	  props: ['_id'],
 
+	  name: 'component-distributor',
+
 	  components: {
 	    InputComponent: InputComponent,
 	    PanelComponent: PanelComponent
@@ -878,7 +881,7 @@
 
 	  computed: {
 	    thisComponent: function thisComponent() {
-	      console.log(this.storedComponents[this._id].sub_ids);
+	      console.log(this.storedComponents[this._id]);
 	      return this.storedComponents[this._id];
 	    }
 	  }
@@ -1048,23 +1051,28 @@
 
 /***/ },
 /* 31 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	module.exports = {};
+	var ComponentDistributor = __webpack_require__(22);
+	module.exports = {
+	  components: {
+	    ComponentDistributor: ComponentDistributor
+	  }
+	};
 
 /***/ },
 /* 32 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n\n</div>\n";
+	module.exports = "\n<div>\n  <component-distributor :_id=\"_id1\"></component-distributor>\n</div>\n";
 
 /***/ },
 /* 33 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class='component-container'>\n  <!-- <component v-for=\"id in _ids\" :is=\"storedComponents[id].type\" :_id=\"id\"></component> -->\n\n  <component :is=\"thisComponent.type\" :_id='_id'>\n    <component-distributor :_id='thisComponent.sub_ids[0]'></component-distributor>\n  </component>\n</div>\n\n\n";
+	module.exports = "\n<div class='component-container'>\n  <!-- <component v-for=\"id in _ids\" :is=\"storedComponents[id].type\" :_id=\"id\"></component> -->\n\n  <div :is=\"thisComponent.type\" :_id='_id'></div>\n\n  <div v-if=\"thisComponent.type==='container'\" class=\"l-container\">\n    <component-distributor v-for=\"sub_id in thisComponent.sub_ids\" :_id='sub_id'></component-distributor>\n  </div>\n\n</div>\n\n\n";
 
 /***/ },
 /* 34 */

@@ -20,7 +20,7 @@
       actions : {
         submit({ dispatch, state }) {
           $.get('/api/table/' + this.tableName, function (data) {
-            var type = 'PanelComponent',
+            var type = 'container',
                 sub_ids = [];
             var panel = Vue.Models.ComponentModel.create({type,sub_ids});
             dispatch(TYPE.COMPONENTS_ADD, panel);
