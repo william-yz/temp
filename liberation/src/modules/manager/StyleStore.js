@@ -34,7 +34,9 @@ const mutations = {
   },
 
   [TYPE.STYLE_UPDATE](state, updateStyle) {
-    _.assign(state.styles[state.selectedId].styles, updateStyle);
+    for (var prop in updateStyle) {
+      Vue.set(state.styles[state.selectedId].styles, prop, updateStyle[prop]);
+    }
   }
 }
 

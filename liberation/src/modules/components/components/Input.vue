@@ -1,7 +1,7 @@
 <template>
-  <div :class="classes" @click="onSelect" :style="styles">
+  <div :class="classes" @click="onSelect" :style="styles | forDiv">
     <label for="" >{{component.name}}</label>
-    <input />
+    <input :style="styles | forInput" />
   </div>
 </template>
 
@@ -38,7 +38,16 @@
       component() {
         return this.storedComponents[this._id];
       }
-    }
+    },
+
+     filters : {
+       forDiv(styles) {
+         var newStyle = _.assign({}, styles);
+         var width = _.replace(newStyle.width, 'px', '');
+         newStyle.width = (width - -20) + 'px';
+         return newStyle;
+       }
+     }
   }
 </script>
 

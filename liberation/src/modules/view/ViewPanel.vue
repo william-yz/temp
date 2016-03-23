@@ -7,7 +7,6 @@
 
 <script>
 var ComponentDistributor = require('../components/ComponentDistributor');
-console.log(ComponentDistributor);
 module.exports = {
   components : {
     ComponentDistributor

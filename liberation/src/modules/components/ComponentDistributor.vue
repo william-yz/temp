@@ -1,5 +1,4 @@
 <template>
-  <div class='component-container'>
     <!-- <component v-for="id in _ids" :is="storedComponents[id].type" :_id="id"></component> -->
 
     <div :is="thisComponent.type" :_id='_id'></div>
@@ -8,7 +7,6 @@
       <component-distributor v-for="sub_id in thisComponent.sub_ids" :_id='sub_id'></component-distributor>
     </div>
 
-  </div>
 
 
 </template>
@@ -40,7 +38,6 @@ module.exports = {
 
   computed: {
     thisComponent() {
-      console.log(this.storedComponents[this._id]);
       return this.storedComponents[this._id];
     }
   }
