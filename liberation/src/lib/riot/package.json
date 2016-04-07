@@ -1,0 +1,155 @@
+{
+  "name": "riot",
+  "version": "2.3.17",
+  "description": "A React-like user interface micro-library",
+  "homepage": "http://riotjs.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/riot/riot"
+  },
+  "author": {
+    "name": "Riot maintainers team + smart people from all over the world"
+  },
+  "contributors": [
+    {
+      "name": "Richard Bondi https://github.com/rsbondi"
+    },
+    {
+      "name": "Gianluca Guarini https://github.com/GianlucaGuarini"
+    },
+    {
+      "name": "Tsutomu Kawamura https://github.com/cognitom"
+    },
+    {
+      "name": "Alberto Martínez https://github.com/aMarCruz"
+    },
+    {
+      "name": "Tero Piirainen  https://github.com/tipiirai"
+    }
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "scripts": {
+    "test": "make riot"
+  },
+  "keywords": [
+    "custom tags",
+    "custom elements",
+    "web components",
+    "virtual dom",
+    "shadow dom",
+    "polymer",
+    "react",
+    "jsx",
+    "minimal",
+    "minimalist",
+    "client-side",
+    "framework",
+    "declarative",
+    "templating",
+    "template",
+    "data binding",
+    "mvc",
+    "router",
+    "model",
+    "view",
+    "controller",
+    "riotjs",
+    "riot.js"
+  ],
+  "dependencies": {
+    "riot-cli": "^2.3.14",
+    "riot-compiler": "^2.3.22",
+    "riot-observable": "^2.3.15",
+    "riot-route": "^2.3.15",
+    "riot-tmpl": "^2.3.21",
+    "simple-dom": "0.3.0",
+    "simple-html-tokenizer": "^0.2.1"
+  },
+  "devDependencies": {
+    "cheerio": "^0.20.0",
+    "coveralls": "^2.11.8",
+    "eslint": "^2.3.0",
+    "expect.js": "^0.3.1",
+    "glob": "^7.0.3",
+    "istanbul": "^0.4.2",
+    "jsdom": "^8.1.0",
+    "karma": "^0.13.21",
+    "karma-coverage": "^0.5.5",
+    "karma-mocha": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-sauce-launcher": "^0.3.1",
+    "mocha": "^2.4.5",
+    "phantomjs-prebuilt": "^2.1.5",
+    "smash": "0.0.15",
+    "uglify-js": "latest"
+  },
+  "preferGlobal": true,
+  "files": [
+    "lib",
+    "riot.js",
+    "riot.min.js",
+    "riot+compiler.js",
+    "riot+compiler.min.js"
+  ],
+  "bin": {
+    "riot": "node_modules/riot-cli/lib/index.js"
+  },
+  "main": "lib/server/index.js",
+  "browser": "riot.js",
+  "spm": {
+    "main": "riot.js",
+    "ignore": [
+      "test",
+      "lib",
+      "make"
+    ]
+  },
+  "gitHead": "2684fa8a644ebc78f4f3f6a0796e000faf9cc1cc",
+  "bugs": {
+    "url": "https://github.com/riot/riot/issues"
+  },
+  "_id": "riot@2.3.17",
+  "_shasum": "f42b32a5e21b0999787a50e3532463bfe3f8cc11",
+  "_from": "riot@latest",
+  "_npmVersion": "3.3.12",
+  "_nodeVersion": "5.1.1",
+  "_npmUser": {
+    "name": "gianlucaguarini",
+    "email": "gianluca.guarini@gmail.com"
+  },
+  "dist": {
+    "shasum": "f42b32a5e21b0999787a50e3532463bfe3f8cc11",
+    "size": 89128,
+    "noattachment": false,
+    "tarball": "http://registry.npm.taobao.org/riot/download/riot-2.3.17.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "aurri",
+      "email": "au@rim.as"
+    },
+    {
+      "name": "cognitom",
+      "email": "cognitom@gmail.com"
+    },
+    {
+      "name": "gianlucaguarini",
+      "email": "gianluca.guarini@gmail.com"
+    },
+    {
+      "name": "tipiirai",
+      "email": "tero@muut.com"
+    }
+  ],
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/riot-2.3.17.tgz_1457508290129_0.21648207074031234"
+  },
+  "directories": {},
+  "publish_time": 1457508294741,
+  "_cnpm_publish_time": 1457508294741,
+  "_resolved": "https://registry.npm.taobao.org/riot/download/riot-2.3.17.tgz"
+}

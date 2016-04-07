@@ -4,18 +4,19 @@
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const plugins = require('gulp-load-plugins')();
-
+const config = require('./config/config');
 
 
 
 gulp.task('eslint', function () {
-  return gulp.src(['server.js', 'modules/**/*.js', 'src/**/*.js'])
+  return gulp.src(['server.js', 'modules/**/*.js', 'src/js/*.js','src/main.js'])
     .pipe(plugins.eslint())
     .pipe(plugins.eslint.format());
 });
 
 gulp.task('watch', function() {
-  gulp.watch('src/**/*', ['webpack']);
+  gulp.watch('src/**/!(bondle).js', ['webpack']);
+  gulp.watch(config.allTags, ['nodemon']);
 });
 
 gulp.task('nodemon', function() {
@@ -31,7 +32,7 @@ gulp.task('nodemon', function() {
 gulp.task('webpack', function() {
   return gulp.src('src/main.js')
     .pipe(plugins.webpack(require('./webpack.config')))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('src/'));
 });
 
 gulp.task('default', function (done) {

@@ -7,8 +7,8 @@ module.exports = {
   },
 
   output : {
-    path : path.join(__dirname, 'dist'),
-    filename : '[name].js'
+    path : path.join(__dirname, 'src'),
+    filename : 'bondle.js'
   },
 
   module : {
@@ -27,22 +27,19 @@ module.exports = {
         test : /\.html$/,
         loader : 'vue-html'
       },{
-        test : /\.vue$/,
-        loader : 'vue'
+        test : /\.tag$/,
+        loader : 'text'
       }
     ]
   },
 
   resolve : {
     root : [path.join(__dirname, 'src')],
-    extensions : ['', '.js', '.css', '.styl', '.vue'],
+    extensions : ['', '.js', '.tag'],
     alias : {
       jquery : path.join(__dirname, 'node_modules', 'jquery', 'dist', 'jquery.min.js'),
       lodash : path.join(__dirname, 'node_modules', 'lodash', 'lodash.min.js'),
-      // backbone : path.join(__dirname, 'node_modules', 'backbone', 'backbone-min.js'),
-      Vue : path.join(__dirname, 'node_modules', 'vue', 'dist', 'vue.min.js'),
-      Vuex : path.join(__dirname, 'node_modules', 'vuex', 'dist', 'vuex.js'),
-      logger : path.join(__dirname, 'node_modules', 'vuex', 'logger.js')
+      riot : path.join(__dirname, 'node_modules', 'riot', 'riot+compiler.js')
     }
   },
 
@@ -51,8 +48,7 @@ module.exports = {
       $: "jquery",
       // Backbone : 'backbone',
       _ : 'lodash',
-      Vue : 'Vue',
-      Vuex : 'Vuex'
+      riot : 'riot'
     })
   ]
 
