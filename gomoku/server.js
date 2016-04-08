@@ -27,40 +27,57 @@ const Pieces = require('./Pieces');
 const Player = require('./Player');
 
 io.on('connection', function (socket) {
+  var cd = new ChessData();
+
 
   socket.on('auto', function () {
-    var cd = new ChessData();
+
+    var p1 = new Player(cd, 1, 'P1', socket);
+    var p2 = new Player(cd, 2, 'P2', socket);
     cd.reset();
-    var p1 = new Player(cd, 1, socket);
-    var p2 = new Player(cd, 2, socket);
+    p1.reset();
+    p2.reset();
+    setTimeout(function () {
+      var timmer = setInterval(function () {
 
-    var timmer = setInterval(function () {
+        if (p1.move()) {
+          clearInterval(timmer);
+          console.log('p1 win.');
+          socket.emit('win','white wins!');
+          return;
+        }
+        if (p2.move()) {
+          clearInterval(timmer);
+          console.log('p2 win.');
+          socket.emit('win','Black wins!');
+          return;
+        }
+      }, 100);
+    }, 1000);
 
-      if (p1.move()) {
-        clearInterval(timmer);
-        console.log('p1 win.');
-        socket.emit('win','white wins!');
-        return;
-      }
-      if (p2.move()) {
-        clearInterval(timmer);
-        console.log('p2 win.');
-        socket.emit('win','Black wins!');
-        return;
-      }
-    }, 100);
   });
 
   var computer = function (chess) {
-    var cd = new ChessData();
+    var p = new Player(cd, chess, 'Computer', socket);
     cd.reset();
-    var p = new Player(cd, chess, socket);
-    socket.on('pdo', function () {
-      if(p.move()) {
-        socket.emit('win','white wins!');
+    p.reset();
+    setTimeout(function () {
+      if (chess == 1) {
+        p.move();
+      }
+    }, 1000);
+    socket.on('pdo', function (next) {
+      if (cd.move(next)) {
+        socket.emit('win','You win!');
         return;
       }
-    });
+      if(p.move()) {
+        socket.emit('win','PC wins!');
+        return;
+      }
+    })
+
+
   }
   socket.on('white', computer);
   socket.on('black', computer);

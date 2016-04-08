@@ -1,8 +1,6 @@
-$(function () {
   var canvas;
   var context;
-  var pTurn = false;
-  var chess;
+  var chess = 2;
   var isWell = false;
   var img_b = new Image();
   img_b.src = "./black.png";//白棋图片
@@ -17,34 +15,9 @@ $(function () {
       }
   }
 
-  var socket = io();
 
-  socket.on('do', function (msg) {
-    pTurn = true;
-    down(msg.x, msg.y, msg.chess);
-  });
 
-  socket.on('win', function (msg) {
-    alert(msg);
-  });
   init();
-  $('#canvas').on('mousedown', play);
-  $('#auto').on('click', function () {
-    init();
-    socket.emit('auto');
-  });
-  $('#white').on('click', function () {
-    init();
-    pTurn = true;
-    chess = 1;
-    socket.emit('white', 2);
-  });
-  $('#black').on('click', function () {
-    init();
-    pTurn = false;
-    chess = 2;
-    socket.emit('black', 1);
-  });
 
   function init() {
     canvas = document.getElementById("canvas");
@@ -67,18 +40,14 @@ $(function () {
 
 
   function play(e) {
-    if (!pTurn) {
-      return;
-    }
-    pTurn = false;
     var x = parseInt((e.clientX - 20) / 40);
     var y = parseInt((e.clientY - 20) / 40);
 
     if (chessData[x][y] != 0) {
       return;
     }
+    chess ^= 3;
     down(x, y, chess);
-    socket.emit('pdo', {x : x, y : y, chess : chess})
   }
 
   function down(x, y, chess) {
@@ -96,5 +65,3 @@ $(function () {
       }
     }
   }
-
-});

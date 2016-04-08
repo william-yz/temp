@@ -3,19 +3,35 @@ const ChessData = require('./ChessData');
 const Pieces = require('./Pieces');
 const Player = require('./Player');
 var cd = new ChessData();
-cd.reset();
-var p1 = new Player(cd, 1);
-var p2 = new Player(cd, 2);
+var p1 = new Player(cd, 1, 'P1');
+var p2 = new Player(cd, 2, 'P2');
+var run = function (count) {
+  console.log('start:' + count);
+  cd.reset();
+  p1.reset();
+  p2.reset();
+  var timmer = setInterval(function () {
 
-var timmer = setInterval(function () {
-  if (p1.move()) {
-    clearInterval(timmer);
-    console.log('p1 win.');
-    return;
-  }
-  if (p2.move()) {
-    clearInterval(timmer);
-    console.log('p2 win.');
-    return;
-  }
-}, 100);
+    if (p1.move()) {
+      console.log('end' + count);
+      clearInterval(timmer);
+      if (count) {
+        run(--count);
+      }
+      return;
+    }
+    if (p2.move()) {
+      console.log('end' + count);
+      clearInterval(timmer);
+      if (count) {
+        run(--count)
+      }
+      return;
+    }
+  }, 10);
+}
+setTimeout(function () {
+    run(10000);
+}, 1000);
+
+// process.exit(0);

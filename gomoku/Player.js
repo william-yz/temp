@@ -5,19 +5,24 @@ var ChessData = require('./ChessData');
 const url = 'mongodb://localhost:27017/gomoku';
 // const log = require('./log');
 class Player {
-  constructor(chessData, chess, socket) {
+  constructor(chessData, chess, name ,socket) {
     this.chessData = chessData;
     this.chess = chess;
-    if (chess === 1) {
-      this.forecast = [new Pieces(7,7,chess)];
+    this.socket = socket;
+    this.name = name;
+    MongoClient.connect(url, (err, d) => {
+      this.db = d;
+      console.log('Player db connected');
+      if (err) console.log(err);
+    });
+  }
+
+  reset() {
+    if (this.chess === 1) {
+      this.forecast = [new Pieces(7,7,this.chess)];
     } else {
       this.forecast = [];
     }
-    this.socket = socket;
-    MongoClient.connect(url, (err, d) => {
-      this.db = d;
-      console.log('db connected');
-    });
   }
 
   move() {
@@ -35,9 +40,6 @@ class Player {
   judge() {
     var l = this.forecast.length;
     var r = Math.floor(Math.random() * l);
-    console.log(l);
-    console.log(r);
-    console.log(this.forecast);
     return this.forecast[r];
     // var pList = [],
     //     map = new Map();

@@ -6,41 +6,25 @@ const _ = require('lodash');
 
 class ChessData {
   constructor() {
-
+    MongoClient.connect(url, (err, d) => {
+      this.db = d;
+      console.log('ChessData db connected');
+    });
   }
 
-  reset(cb) {
-    var init = () => {
-      var chessboard = new Array(15);
-      for (var x = 0; x < 15; x++) {
-          chessboard[x] = new Array(15);
-          for (var y = 0; y < 15; y++) {
-              chessboard[x][y] = 0;
-          }
-      }
+  reset() {
+    var chessboard = new Array(15);
+    for (var x = 0; x < 15; x++) {
+        chessboard[x] = new Array(15);
+        for (var y = 0; y < 15; y++) {
+            chessboard[x][y] = 0;
+        }
+    }
 
-      this.chessboard = chessboard;
-      this.last = null;
-      this.count = 0;
-      this.key = moment().format('YYYYMMDDHHmmssSSS');
-      this.indents = [];
-    },
-    dbConnect = (cb) => {
-      MongoClient.connect(url, (err, d) => {
-        this.db = d;
-        console.log('db connected');
-        cb(d);
-      });
-    }
-    if (typeof cb === 'function') {
-      init();
-      dbConnect(cb);
-    } else {
-      return new Promise(resolve => {
-        init();
-        dbConnect(resolve);
-      });
-    }
+    this.chessboard = chessboard;
+    this.last = null;
+    this.count = 0;
+    this.key = moment().format('YYYYMMDDHHmmssSSS');
 
   }
 
@@ -99,7 +83,7 @@ class ChessData {
     var x = this.last.x,
         y = this.last.y,
         chess = this.last.chess;
-    if (this.count < 10) {
+    if (this.count < 9) {
       return 0;
     }
     var count1 = 0;
