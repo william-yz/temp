@@ -5,6 +5,7 @@ const Player = require('./Player');
 var cd = new ChessData();
 var p1 = new Player(cd, 1, 'P1');
 var p2 = new Player(cd, 2, 'P2');
+
 var run = function (count) {
   console.log('start:' + count);
   cd.reset();
@@ -31,7 +32,7 @@ var run = function (count) {
   }, 10);
 }
 setTimeout(function () {
-    run(10000);
+    run(process.argv[2] || 1);
 }, 1000);
 
 // process.exit(0);

@@ -4,6 +4,7 @@ const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/gomoku';
 const _ = require('lodash');
 
+const Pieces = require('./Pieces');
 class ChessData {
   constructor() {
     MongoClient.connect(url, (err, d) => {
@@ -34,10 +35,10 @@ class ChessData {
     this.last = pieces;
     this.save();
     var result = this.judge();
-    if (result) {
+    if (result !== null) {
       this.update(pieces.chess);
     }
-    return result;
+    return result === null ? 0 : result.chess;
   }
 
   getString() {
@@ -79,82 +80,125 @@ class ChessData {
       }
     });
   }
-  judge() {
+
+  suppose(pieces, cb) {
+    var pre = this.last;
+    this.chessboard[pieces.x][pieces.y] = pieces.chess;
+    this.count ++;
+    this.last = pieces;
+    cb();
+    this.chessboard[pieces.x][pieces.y] = 0;
+    this.count --;
+    this.last = pre;
+  }
+
+  judge(n) {
+    if (!n && this.count < 9 || !this.last) {
+      return null;
+    }
+    if (!n) {
+      n = 5;
+    }
     var x = this.last.x,
         y = this.last.y,
         chess = this.last.chess;
-    if (this.count < 9) {
-      return 0;
-    }
     var count1 = 0;
     var count2 = 0;
     var count3 = 0;
     var count4 = 0;
+    var edge1 = [];
+    var edge2 = [];
+    var edge3 = [];
+    var edge4 = [];
 
     for (var i = x; i >= 0; i--) {
       if (this.chessboard[i][y] != chess) {
+        if (this.chessboard[i][y] == 0) {
+          edge1.push(new Pieces(i, y, chess ^ 3));
+        }
         break;
       }
       count1++;
     }
     for (var i = x + 1; i < 15; i++) {
       if (this.chessboard[i][y] != chess) {
+        if (this.chessboard[i][y] == 0) {
+          edge1.push(new Pieces(i, y, chess ^ 3));
+        }
         break;
       }
       count1++;
     }
-    if (count1 >= 5) {
-      return chess;
+    if (count1 >= n) {
+      return {edge : edge1, chess : chess};
     }
     //上下判断
     for (var i = y; i >= 0; i--) {
       if (this.chessboard[x][i] != chess) {
+        if (this.chessboard[x][i] == 0) {
+          edge2.push(new Pieces(x, i, chess ^ 3));
+        }
         break;
       }
       count2++;
     }
     for (var i = y + 1; i < 15; i++) {
       if (this.chessboard[x][i] != chess) {
+        if (this.chessboard[x][i] == 0) {
+          edge2.push(new Pieces(x, i, chess ^ 3));
+        }
         break;
       }
       count2++;
     }
-    if (count2 >= 5) {
-      return chess;
+    if (count2 >= n) {
+      return {edge : edge2, chess : chess};
     }
     //左上右下判断
     for (var i = x, j = y; i >= 0 && j >= 0; i--, j--) {
       if (this.chessboard[i][j] != chess) {
+        if (this.chessboard[i][j] == 0) {
+          edge3.push(new Pieces(i, j, chess ^ 3));
+        }
         break;
       }
       count3++;
     }
     for (var i = x + 1, j = y + 1; i < 15 && j < 15; i++, j++) {
       if (this.chessboard[i][j] != chess) {
+        if (this.chessboard[i][j] == 0) {
+          edge3.push(new Pieces(i, j, chess ^ 3));
+        }
         break;
       }
       count3++;
     }
-    if (count3 >= 5) {
-      return chess;
+    if (count3 >= n) {
+      return {edge : edge3, chess : chess};
     }
     //右上左下判断
     for (var i = x, j = y; i >= 0 && j < 15; i--, j++) {
       if (this.chessboard[i][j] != chess) {
+        if (this.chessboard[i][j] == 0) {
+          edge4.push(new Pieces(i, j, chess ^ 3));
+        }
         break;
       }
       count4++;
     }
     for (var i = x + 1, j = y - 1; i < 15 && j >= 0; i++, j--) {
       if (this.chessboard[i][j] != chess) {
+        if (this.chessboard[i][j] == 0) {
+          edge4.push(new Pieces(i, j, chess ^ 3));
+        }
         break;
       }
       count4++;
     }
-    if (count4 >= 5) {
-      return chess;
+    if (count4 >= n) {
+      return {edge : edge4, chess : chess};
     }
-    return 0;
+    return null;
   }
 
 }

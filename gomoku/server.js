@@ -52,7 +52,7 @@ io.on('connection', function (socket) {
           socket.emit('win','Black wins!');
           return;
         }
-      }, 100);
+      }, 1000);
     }, 1000);
 
   });
