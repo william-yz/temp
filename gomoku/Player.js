@@ -1,4 +1,5 @@
 'use strict';
+const _ = require('lodash');
 const MongoClient = require('mongodb').MongoClient;
 const Pieces = require('./Pieces');
 var ChessData = require('./ChessData');
@@ -26,26 +27,79 @@ class Player {
     } else {
       this.forecast = [];
     }
+    // console.log(`${this.name}: reset done. ${this.forecast.length}`);
   }
 
   move() {
-    this.updateForecast();
-    var next = this.judge();
-    var result = this.chessData.move(next);
-    if (this.socket) {
-      this.socket.emit('do', this.chessData.last);
-    }
-    // console.log(this.forecast[0]);
-    this.updateForecast();
-    return result;
+    return new Promise(resolve => {
+      this.updateForecast();
+      // var next = this.judge();
+      this.judge2().then(next => {
+        var result = this.chessData.move(next);
+
+        if (this.socket) {
+          this.socket.emit('do', this.chessData.last);
+        }
+        // console.log(this.forecast[0]);
+        this.updateForecast();
+        resolve(result);
+      });
+    });
+  }
+
+  judge2() {
+    var forecast = this.judge();
+    return new Promise((resolve, reject) => {
+      var collectionName = 'test' + (this.chessData.count + 1);
+      var coll = this.db.collection(collectionName);
+      var ps = [];
+      forecast.forEach(f => {
+        ps.push(coll.findOne({_id : this.chessData.getForecastString(f)}));
+      });
+      Promise.all(ps)
+             .then((results) => {
+               var map = [];
+               for (let i = 0; i < results.length; i ++) {
+                 var result = results[i];
+                 var last = (_.last(map) || 0);
+                 if (result !== null) {
+                    var total = result.value.white + result.value.black,
+                        me = this.chess === 1 ? result.value.white : result.value.black,
+                        rate = (me / total).toFixed(3) * 100;
+                        if (rate === 0) {
+                          rate = 2;
+                        }
+                    map.push(last + rate);
+                 } else {
+                   map.push(last + 1);
+                 }
+               }
+               var choose = Math.random() * _.last(map);
+               for (let i = 0; i < map.length; i ++) {
+                 if (map[i] >= choose) {
+                   if (!forecast[i]) {
+                     console.log(ps.length);
+                     console.log(i);
+                     console.log(map.length);
+                     console.log(choose);
+                     console.log(forecast.length);
+                     console.log(forecast);
+                     process.exit(1);
+                   }
+                   resolve(forecast[i]);
+                   break;
+                 }
+               }
+             })
+    });
   }
 
   judge() {
     // var l = this.forecast.length;
     // var r = Math.floor(Math.random() * l);
     // return this.forecast[r];
-
-    var dn4 = [],
+    var dn5 = [],
+        dn4 = [],
         dn3 = [],
         dn2 = [];
 
@@ -56,63 +110,65 @@ class Player {
 
     var nf = this.forecast.forEach(f => {
 
-      for (var i = 4; i > 0; i --) {
-        var judge = this.chessData.judge(i);
-        if (judge !== null) {
-          var edge = judge.edge;
-          if (i === 4) {
-            dn4 = dn4.concat(edge);
-          }
-          if (i === 3) {
-            dn3 = dn3.concat(edge);
-          }
-          if (i === 2) {
-            dn2 = dn2.concat(edge);
-          }
-        }
-      }
-
       this.chessData.suppose(f, () => {
         for (var i = 5; i > 0; i --) {
-          if (this.chessData.judge(i)) {
+          var judge = this.chessData.judge(i);
+          if (judge) {
             if (i === 5) {
               n5.push(f);
             }
-            if (i === 4) {
+            if (i === 4 && judge.edge.length > 0) {
               n4.push(f);
             }
-            if (i === 3) {
+            if (i === 3 && judge.edge.length == 2) {
               n3.push(f);
-            }
-            if (i === 2) {
-              n2.push(f);
             }
           }
         }
-      })
+      });
+      this.chessData.suppose({x : f.x,y:f.y,chess:f.chess ^ 3}, () => {
+        for (var i = 5; i > 0; i --) {
+          var judge = this.chessData.judge(i);
+          if (judge) {
+            if (i === 5 && judge.edge.length > 0) {
+              dn5.push(f);
+            }
+            if (i === 4 && judge.edge.length == 2) {
+              dn4.push(f);
+            }
+            if (i === 3) {
+              // dn3.push(f);
+            }
+          }
+        }
+      });
     });
     if (n5.length !== 0) {
-      return n5[0];
+      return n5;
     }
-    if (dn4.length !== 0) {
-      return random(dn4);
+    if (dn5.length !== 0) {
+      return dn5;
     }
     if (n4.length !== 0) {
-      return random(n4);
+      return n4;
     }
-    if (dn3.length !== 0) {
-      return random(dn3);
+    if (dn4.length !== 0) {
+      return dn4;
     }
     if (n3.length !== 0) {
-      return random(n3);
+      return n3;
     }
-    if (dn2.length !== 0) {
-      return random(dn2);
+    if (dn3.length !== 0) {
+      return dn3;
     }
     if (n2.length !== 0) {
-      return random(n2);
+      return n2;
     }
-    return random(this.forecast);
+    if (dn2.length !== 0) {
+      return dn2;
+    }
+    return this.forecast;
+  }
     // var pList = [],
     //     map = new Map();
     // for (let i = 0; i < this.forecast.length; i ++) {
@@ -128,7 +184,7 @@ class Player {
     //   });
     // })
 
-  }
+
 
   getNewPieces(x, y) {
     return new Pieces(x, y, this.chess);
@@ -142,23 +198,23 @@ class Player {
     var x = this.chessData.last.x,
         y = this.chessData.last.y;
     var chessboard = this.chessData.chessboard;
-    if (x - 1 > 0 && chessboard[x - 1][y] === 0)
+    if (x - 1 >= 0 && chessboard[x - 1][y] === 0)
       l.push(this.getNewPieces(x - 1, y));
-    if (x - 1 > 0 && y - 1 > 0 && chessboard[x - 1][y - 1] === 0)
+    if (x - 1 >= 0 && y - 1 >= 0 && chessboard[x - 1][y - 1] === 0)
       l.push(this.getNewPieces(x - 1, y - 1))
-    if (x - 1 > 0 && y + 1 < 15 && chessboard[x - 1][y + 1] === 0)
+    if (x - 1 >= 0 && y + 1 < 15 && chessboard[x - 1][y + 1] === 0)
       l.push(this.getNewPieces(x - 1, y + 1));
     // if (x - 2 > 0 && chessboard[x - 2][y] === 0)
     //   l.push(this.getNewPieces(x - 2, y));
     if (x + 1 < 15 && chessboard[x + 1][y] === 0)
       l.push(this.getNewPieces(x + 1,y));
-    if (x + 1 < 15 && y - 1 > 0 && chessboard[x + 1][y - 1] === 0)
+    if (x + 1 < 15 && y - 1 >= 0 && chessboard[x + 1][y - 1] === 0)
       l.push(this.getNewPieces(x + 1,y - 1));
     if (x + 1 < 15 && y + 1 < 15 && chessboard[x + 1][y + 1] === 0)
       l.push(this.getNewPieces(x + 1,y + 1));
     // if (x + 2 < 15 && chessboard[x + 2][y] === 0)
     //   l.push(this.getNewPieces(x + 2,y));
-    if (y - 1 > 0 && chessboard[x][y - 1] === 0)
+    if (y - 1 >= 0 && chessboard[x][y - 1] === 0)
       l.push(this.getNewPieces(x,y - 1));
     // if (y - 2 > 0 && chessboard[x][y - 2] === 0)
     //   l.push(this.getNewPieces(x,y - 2));

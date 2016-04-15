@@ -37,22 +37,22 @@ io.on('connection', function (socket) {
     cd.reset();
     p1.reset();
     p2.reset();
+    var timmer = function () {
+      p1.move().then(result1 => {
+        if (result1) {
+          return;
+        } else {
+          p2.move().then(result2 => {
+            if (result2) {
+              return;
+            }
+            timmer();
+          })
+        }
+      })
+    };
     setTimeout(function () {
-      var timmer = setInterval(function () {
-
-        if (p1.move()) {
-          clearInterval(timmer);
-          console.log('p1 win.');
-          socket.emit('win','white wins!');
-          return;
-        }
-        if (p2.move()) {
-          clearInterval(timmer);
-          console.log('p2 win.');
-          socket.emit('win','Black wins!');
-          return;
-        }
-      }, 1000);
+      timmer();
     }, 1000);
 
   });
@@ -71,10 +71,12 @@ io.on('connection', function (socket) {
         socket.emit('win','You win!');
         return;
       }
-      if(p.move()) {
-        socket.emit('win','PC wins!');
-        return;
-      }
+      p.move().then(result => {
+        if (result) {
+          console.log('PC win');
+          socket.emit('win','PC wins!');
+        }
+      })
     })
 
 

@@ -3,7 +3,7 @@ const moment = require('moment');
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/gomoku';
 const _ = require('lodash');
-
+var saveColl = 'stores';
 const Pieces = require('./Pieces');
 class ChessData {
   constructor() {
@@ -38,6 +38,10 @@ class ChessData {
     if (result !== null) {
       this.update(pieces.chess);
     }
+    if (this.count === 15 * 15) {
+      this.update(3);
+      result = {chess : 3};
+    }
     return result === null ? 0 : result.chess;
   }
 
@@ -64,7 +68,7 @@ class ChessData {
   }
 
   save() {
-    var col = this.db.collection('stores');
+    var col = this.db.collection(saveColl);
     col.insert({key : this.key, data : this.getString(), count : this.count}, err => {
       if (err) {
         console.log(err);
@@ -73,7 +77,7 @@ class ChessData {
   }
 
   update(chess) {
-    var col = this.db.collection('stores');
+    var col = this.db.collection(saveColl);
     col.updateMany({key: this.key}, {$set : {chess : chess}}, err => {
       if (err) {
         console.log(err);
@@ -199,6 +203,29 @@ class ChessData {
       return {edge : edge4, chess : chess};
     }
     return null;
+  }
+
+  judge2(chess) {
+    var e = (x,y) => {{x,y}};
+    for (let i = 0; i < 15; i ++) {
+      var edge1 = [];
+      var count = 0;
+      var pre = false;
+      for (let j = 0; j < 15; j ++) {
+        if (!pre) {
+          count = 0;
+        }
+        if (this.chessboard[i][j] == chess ^ 3) {
+          pre = true;
+          count ++;
+        } else {
+          pre = false;
+        }
+        if (count == 3) {
+
+        }
+      }
+    }
   }
 
 }
