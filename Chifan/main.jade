@@ -1,0 +1,25 @@
+html
+  a(href="/order") 订餐
+  br
+  
+  if dates
+    h3 Nopay
+    br
+    each date in dates
+      if nopay[date]
+        | #{date} :
+        | 菜：
+        | #{nopay[date].cai}
+        | 价格:
+        | #{nopay[date].price}
+      
+    
+    h3 Paid
+    br
+    each date in dates
+      if paid[date]
+        | #{date} :
+        | 菜：
+        | #{paid[date].cai}
+        | 价格:
+        | #{paid[date].price}
