@@ -1,0 +1,28 @@
+#content {
+  background: #ECECEC;
+  overflow: hidden;
+  padding: 24px;
+  height: 500px;
+}
+
+.card-container > .ant-tabs-card {
+  height: 430px
+}
+.card-container > .ant-tabs-card > .ant-tabs-content {
+  background: #fff;
+  padding: 16px;
+  height: 100%;
+  margin-top: -16px;
+}
+
+.card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
+  border-color: transparent;
+}
+
+.card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+  border-color: #fff;
+}
+
+.card-container > .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane{
+  height: 100%;
+}
