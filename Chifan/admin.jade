@@ -1,0 +1,15 @@
+html
+  form(action="/rest",  method="post")
+    input(name="restaurant", value=result.restaurant)
+    input(type="submit")
+  form(action="/update", method="post")
+    each r in result
+      br
+      = r.user
+      | --- 
+      = r.cai
+      | ---
+      input(name=r.user, value=r.price)
+      
+    br
+    input(type="submit")

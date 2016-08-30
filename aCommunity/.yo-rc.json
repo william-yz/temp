@@ -1,0 +1,8 @@
+{
+  "generator-react-webpack": {
+    "appName": "aCommunity",
+    "style": "stylus",
+    "postcss": false,
+    "generatedWithVersion": 3
+  }
+}
