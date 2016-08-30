@@ -1,0 +1,21 @@
+{
+  "name": "chifan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "cookie-parser": "^1.4.1",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "jade": "^1.11.0",
+    "jquery": "^2.2.3",
+    "moment": "^2.13.0",
+    "mongodb": "^2.1.18"
+  }
+}
