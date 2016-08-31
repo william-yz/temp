@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 
 import { Button, Modal, Form, Input } from 'antd'
-
+import { login } from '../services/user'
+import Cookies from 'js-cookie'
+import { browserHistory } from 'react-router'
 const FormItem = Form.Item
 
 class SignInPage extends Component{
@@ -10,11 +12,10 @@ class SignInPage extends Component{
     super(props)
   }
   handleLogin() {
-    console.log(this.props.form.getFieldsValue())
-    this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({ loading: false, visible: false });
-    }, 3000);
+    login(this.props.form.getFieldsValue()).then(({jsonResult}) => {
+      Cookies.set('user', jsonResult.response.username)
+      browserHistory.push('index')
+    })
   }
 
   handleCancel() {
@@ -35,7 +36,7 @@ class SignInPage extends Component{
             </Button>
           ]}
         >
-        <Form horizontal form={this.props.form}>
+        <Form horizontal>
             <FormItem
               label="用户名"
             >

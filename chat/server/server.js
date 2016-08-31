@@ -3,7 +3,10 @@ const app = require('express')()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 
-server.listen(3001)
+const express = require('./config/express')
+
+express.init(app)
+
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' })
@@ -11,3 +14,6 @@ io.on('connection', function (socket) {
     console.log(data)
   })
 })
+
+app.listen(3000)
+server.listen(3001)

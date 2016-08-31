@@ -32,8 +32,7 @@ function errorMessageParse(res) {
 function xFetch(url, options) {
   const opts = { ...options };
   opts.headers = {
-    ...opts.headers,
-    authorization: cookie.get('authorization') || '',
+    ...opts.headers
   };
 
   return fetch(url, opts)

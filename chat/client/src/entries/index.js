@@ -12,7 +12,3 @@ var socket = io.connect('http://localhost:3001');
     console.log(data);
     socket.emit('my other event', { my: 'data' });
   });
-
-import Cookies from 'js-cookie'
-
-// Cookies.remove('user')
